@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MF0 version="1.1" packageUris="http://schema.mathworks.com/mf0/faultinfo_datamodel/R2021a">
+  <faultinfo.FaultContainerSet type="faultinfo.FaultContainerSet" uuid="bb04ec6a-bf0c-4b58-929a-7ec7345a0d87">
+    <conditionals type="faultinfo.conditional.Conditional" uuid="9be5f9af-0264-42a3-9908-e041de5f27fd">
+      <checksum>00000000-0000-0000-0000-000000000000</checksum>
+      <condition>x == true</condition>
+      <mustBeLogged>false</mustBeLogged>
+      <name>SampleConditional</name>
+      <resyncRefBlkID></resyncRefBlkID>
+      <resyncUUID>00000000-0000-0000-0000-000000000000</resyncUUID>
+      <symbols type="faultinfo.conditional.ExpressionSymbol" uuid="fc192945-c842-43c3-b002-4766d51f788c">
+        <expression>true</expression>
+        <name>x</name>
+      </symbols>
+    </conditionals>
+    <faultContainers type="faultinfo.FaultContainer" uuid="7e69024d-49ff-4d01-841b-42de89880335">
+      <activeFault type="faultinfo.SSFault" uuid="13eb1b6a-341e-4fc7-8b2e-ca132a59f464"/>
+      <faultedEntityID>SSSubelement|DC_Motor:9|Armature winding</faultedEntityID>
+      <faultedEntityName>DC_Motor/DC Motor/Armature winding</faultedEntityName>
+      <faults type="faultinfo.SSFault" uuid="13eb1b6a-341e-4fc7-8b2e-ca132a59f464">
+        <checksum>a78228c7-2302-4a47-9357-8f222761be1e</checksum>
+        <faultDescription></faultDescription>
+        <faultName>DCMotor_fault</faultName>
+        <resyncUUID>00000000-0000-0000-0000-000000000000</resyncUUID>
+        <triggerOn type="faultinfo.ManualTrigger" uuid="926559aa-a723-4ccf-b518-d6a61ffdc952">
+          <active>false</active>
+          <isPersistent>true</isPersistent>
+        </triggerOn>
+      </faults>
+      <isEnabled>false</isEnabled>
+    </faultContainers>
+    <isEnabled>true</isEnabled>
+    <lastUpdatedAt>2025-03-09T22:09:52</lastUpdatedAt>
+    <modelName>DC_Motor</modelName>
+    <modelUUID>8672489c-8d64-455a-b78d-7d62ac3ce7b3</modelUUID>
+  </faultinfo.FaultContainerSet>
+  <faultinfo.FailureModeContainer type="faultinfo.FailureModeContainer" uuid="f0e94670-6a56-43e8-8476-f19bbcac2304">
+    <failureModes type="faultinfo.FailureMode" uuid="882953c9-7aad-4578-9abb-92bf0b32ba97">
+      <ID>1</ID>
+      <associatedFaults type="faultinfo.SSFault" uuid="13eb1b6a-341e-4fc7-8b2e-ca132a59f464"/>
+      <faultSubsystemName>DCMotor_fault</faultSubsystemName>
+      <resyncUUID>00000000-0000-0000-0000-000000000000</resyncUUID>
+    </failureModes>
+    <faultModelName>DC_Motor_FaultModel</faultModelName>
+    <faultModelUUID>e24548ad-c3da-4c11-b883-fc7425511d67</faultModelUUID>
+  </faultinfo.FailureModeContainer>
+</MF0>
