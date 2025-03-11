@@ -1,4 +1,4 @@
-# 🔧 Control Systems & Systems Modeling | Goby Engineering
+# 🔧 Control Systems | Goby Engineering
 
 <p align="center">
   <a href="https://julialang.org/">
