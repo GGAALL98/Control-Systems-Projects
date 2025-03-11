@@ -9,11 +9,11 @@
   </a>
 </p>
 
-## About Goby Engineering
+## 👨‍💻 About Goby Engineering
 
 Welcome to **Goby Engineering**, where I share my work on **Control Systems** and **Systems Modeling**. I’m **Gal**, a **Mechanical Engineering student** at **Tel Aviv University**. This repository showcases my projects focused on dynamic system modeling, control system design, and simulation techniques.
 
-## Repository Overview
+## 📚 Repository Overview
 
 This repository focuses on the study and practical application of **Control Systems** and **Systems Modeling**. You will find various projects that cover:
 
