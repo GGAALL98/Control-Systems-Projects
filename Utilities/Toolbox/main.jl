@@ -393,6 +393,7 @@ function main_menu()
       println("9. Options")
       println("0. Exit")
     else
+      println("Goby's Control Systems Toolbox")
       println("1. Define Controller")
       println("2. Define Plant")
       println("3. Open-Loop / Closed-Loop System")
