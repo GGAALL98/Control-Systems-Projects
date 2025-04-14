@@ -311,7 +311,7 @@ end
 
 # 6. System plots
 function system_plots()
-  global T_sys  # Declare  T_sys as global
+  global plant  # Declare plant as global
   while true # Keep the menu loop running until the user chooses "Back"
     println("System Plots")
     println("1. Bode Plot")
@@ -324,19 +324,19 @@ function system_plots()
     input = parse(Int, readline())
 
     if input == 1
-      display(bodeplot(T_sys))
+      display(bodeplot(plant))
 
     elseif input == 2
-      display(nyquistplot(T_sys))
+      display(nyquistplot(plant))
 
     elseif input == 3
-      display(rlocusplot(T_sys))
+      display(rlocusplot(plant))
 
     elseif input == 4
-      display(pzmap(T_sys))
+      display(pzmap(plant))
 
     elseif input == 5
-      display(nicholsplot(T_sys))
+      display(nicholsplot(plant))
 
     elseif input == 9
       return false
