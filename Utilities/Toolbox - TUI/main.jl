@@ -289,7 +289,7 @@ function system_analysis()
       println("system poles: ", pole(T_sys))
 
     elseif input == 2
-      println("system zeros: ", zero(T_sys))
+      println("system zeros: ", tzero(T_sys))
 
     elseif input == 3
       si = stepinfo(T_sys)
