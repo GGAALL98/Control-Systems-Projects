@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.20.5
+# v0.20.6
 
 using Markdown
 using InteractiveUtils
@@ -133,6 +133,11 @@ begin
     	H = tf(H_num, H_den)
 	end
 end
+
+# ╔═╡ 4118fe42-b534-4964-a413-7a72aeddaeaf
+md"""
+## Transfer Function
+"""
 
 # ╔═╡ 51528709-5549-4666-b019-fc13e583c28c
 if system_type == "Closed-Loop"
@@ -322,6 +327,137 @@ elseif plot_type == "Nichols Chart"
 	nicholsplot(P)
 end
 
+# ╔═╡ a8b7fd89-6f86-468f-a1d9-9f88b86bc89d
+md"""
+# Controller Design & Tuning
+
+Controllers type: **PID**, **LQR**
+"""
+
+# ╔═╡ 8e3877cf-7b9d-43c0-8526-ea313956e975
+md"""
+Controller: $(@bind controller_type Select(["None", "PID", "LQR"]))
+"""
+
+# ╔═╡ 38f345c8-cccf-4da7-a84d-e92b53a60022
+if controller_type == "PID"
+	md"""
+	## PID Controller
+	
+	Design and tune PID controllers.
+	
+	PID controller function: ``C\left( s \right) = K_p + \frac{K_i}{s} + K_d s``
+	
+	### Controller Values
+	
+	Proportiona;:  $(@bind PID_P_input TextField(default="1"))
+	
+	Integral:  $(@bind PID_I_input TextField(default="1"))
+	
+	Derivative:  $(@bind PID_D_input TextField(default="1"))
+	"""
+end
+
+# ╔═╡ c9d6d656-8bcb-408e-aab5-a1a39fe9ecae
+if controller_type == "LQR"
+	md"""
+	## LQR Controller
+	"""
+end
+
+# ╔═╡ b6efed0d-ddfd-49b6-a351-207b91997330
+if controller_type != "None"
+	md"""
+	## C(s)
+	"""
+end
+
+# ╔═╡ 5f0940a5-8e2c-436b-8d70-989a857fee6c
+if controller_type == "PID"
+	begin
+		# Parse input values
+		PID_P_val = parse(Float64, PID_P_input)
+		PID_I_val = parse(Float64, PID_I_input)
+		PID_D_val = parse(Float64, PID_D_input)
+	
+		C_PID = pid(PID_P_val, PID_I_val, PID_D_val)
+	end
+end
+
+# ╔═╡ fa80a241-547b-4887-98e0-311d84e86b42
+if controller_type != "None"
+	md"""
+	## Transfer Function
+	"""
+end
+
+# ╔═╡ 54c9ecea-5368-4a31-b615-c2fc5bb41308
+if controller_type == "PID"
+	if system_type == "Closed-Loop"
+		G_PID = feedback(C_PID * P, H)
+	else
+		G_PID = C_PID * P
+	end
+end
+
+# ╔═╡ 9d8bf6d6-40ba-4f4d-995d-7243b1f8eed0
+if controller_type != "None"
+	md"""
+	### Stepinfo
+	"""
+end
+
+# ╔═╡ a1be6cb0-4e89-4fdf-bd3a-c755e056281f
+if controller_type == "PID"
+	si_PID = stepinfo(step(G_PID))
+end
+
+# ╔═╡ 8f35f02d-2963-4bce-af7e-9ae136ab0162
+if controller_type == "PID"
+	plot(si_PID)
+end
+
+# ╔═╡ ff3a714d-178b-4621-bfcf-c8407d2edfd6
+if controller_type != "None"
+	md"""
+	### Tuned System Response
+	"""
+end
+
+# ╔═╡ 6af50816-b908-4e37-87d7-52545309ee10
+begin
+	if controller_type == "PID"
+		G_tuned = G_PID
+		# Discretize the system using c2d
+		if harmonic_function_type != "Step"
+		    sys_d_tuned = c2d(G_tuned, Ts)
+		end
+		
+		# Step
+		if harmonic_function_type == "Step"
+			plot(step(G_tuned))
+			
+		# Ramp plot
+		elseif harmonic_function_type == "Ramp"
+			plot(lsim(sys_d_tuned, ramp_input_matrix, time_vec)) # Plot
+			
+		# Impulse
+		elseif harmonic_function_type == "Impulse"
+			plot(impulse(G_tuned, t_max_input))
+			
+		# Pulse
+		elseif harmonic_function_type == "Pulse"
+			# Plot the system response to the pulse input using lsim
+	      	plot(lsim(sys_d_tuned, pulse_input_matrix, time_vec))
+	
+		# Sinusoidal or Cosine
+		elseif harmonic_function_type == "Sinusoidal" || harmonic_function_type == "Cosine"
+			# Plot the system response to the harmonic input using lsim
+		    plot(lsim(sys_d_tuned, harmonic_input_matrix, time_vec))  # Plot
+		end
+	end
+end
+
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
@@ -339,7 +475,7 @@ PlutoUI = "~0.7.62"
 PLUTO_MANIFEST_TOML_CONTENTS = """
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.11.4"
+julia_version = "1.11.5"
 manifest_format = "2.0"
 project_hash = "9612ab08d478c2889c830e9a7b9bba42029628a8"
 
@@ -1625,7 +1761,7 @@ version = "0.3.27+1"
 [[deps.OpenLibm_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "05823500-19ac-5b8b-9628-191a04bc5112"
-version = "0.8.1+4"
+version = "0.8.5+0"
 
 [[deps.OpenSSL]]
 deps = ["BitFlags", "Dates", "MozillaCACerts_jll", "OpenSSL_jll", "Sockets"]
@@ -2790,6 +2926,7 @@ version = "1.4.1+2"
 # ╟─2b910722-215b-49a2-8942-f864b9a26795
 # ╟─c8979555-c61d-4802-a70a-248727b76443
 # ╟─7f7ca59c-85bf-4c5c-935f-2b2c32c7c774
+# ╟─4118fe42-b534-4964-a413-7a72aeddaeaf
 # ╟─51528709-5549-4666-b019-fc13e583c28c
 # ╟─df8ba450-9959-4400-b287-8407703b2a78
 # ╟─4c001fd9-7c70-4ff2-95bb-cb9b0f106c39
@@ -2806,7 +2943,20 @@ version = "1.4.1+2"
 # ╟─dd97a24a-1a57-4d6c-893a-83b18e35a8e6
 # ╟─b3898ada-6a0f-4505-8eca-e6e23b3d5410
 # ╟─97781cd4-6b5e-4d86-a57a-3be12146ef8c
-# ╠═9f170526-a08e-462f-a01a-c85717b63f13
+# ╟─9f170526-a08e-462f-a01a-c85717b63f13
 # ╟─618ac184-a8d2-4a88-acef-6d449503eb51
+# ╟─a8b7fd89-6f86-468f-a1d9-9f88b86bc89d
+# ╟─8e3877cf-7b9d-43c0-8526-ea313956e975
+# ╟─38f345c8-cccf-4da7-a84d-e92b53a60022
+# ╟─c9d6d656-8bcb-408e-aab5-a1a39fe9ecae
+# ╟─b6efed0d-ddfd-49b6-a351-207b91997330
+# ╟─5f0940a5-8e2c-436b-8d70-989a857fee6c
+# ╟─fa80a241-547b-4887-98e0-311d84e86b42
+# ╟─54c9ecea-5368-4a31-b615-c2fc5bb41308
+# ╟─9d8bf6d6-40ba-4f4d-995d-7243b1f8eed0
+# ╟─a1be6cb0-4e89-4fdf-bd3a-c755e056281f
+# ╟─8f35f02d-2963-4bce-af7e-9ae136ab0162
+# ╟─ff3a714d-178b-4621-bfcf-c8407d2edfd6
+# ╟─6af50816-b908-4e37-87d7-52545309ee10
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
